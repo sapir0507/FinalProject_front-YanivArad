@@ -1,18 +1,26 @@
+import { Container } from "@mui/material";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function ListItemComp({isCus, cusList, prodList}) {
 
-    return ( <div>
-        {isCus? <div>
+    useEffect(() => {
+      if(!isCus){
+        console.log("listItem", prodList)
+      }
+    }, [isCus, prodList])
+    
+    return ( <Container>
+        {isCus? <Container>
             {cusList && cusList.map(customer=>{
-                return <li key={customer.id}><Link to='/:id'>{customer.Firstname + ' ' + customer.LastName}</Link></li>
+                return <li key={customer.ID}><Link to={`/EditCustomers/${customer.ID}`}>{customer.FirstName + ' ' + customer.LastName}</Link></li>
             })}
-        </div> : <div>
+        </Container> : <Container>
             {prodList && prodList.map(product=>{
-                return <li key={product.id}><Link to='/:id'>{product.name}</Link></li>
+                return <li key={product.ID}><Link to={`/EditProducts/${product.ID}`}>{product.Name}</Link></li>
             })}
-        </div>}
-    </div> );
+        </Container>}
+    </Container> );
 }
 
 export default ListItemComp;

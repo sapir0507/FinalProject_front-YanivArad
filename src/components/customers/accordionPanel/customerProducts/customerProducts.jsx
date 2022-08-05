@@ -118,12 +118,12 @@ function CustomerProductsComp({customer}) {
         if(purchasesSelect){
             purchasesSelect.forEach(purchase=>{
                 if(purchase.CustomerId===customer.ID){
-                    debugger
                     const productPurchases = productsSelect.filter(prod=>prod.ID===purchase.ProductId);
                     if(productPurchases)
+                    console.log(purchase)
                         productPurchases.forEach(item => {
                             tempRows.push({
-                                productID: purchase.productId,
+                                productID: purchase.ProductId,
                                 productName: item.Name,
                                 purchaseDate: purchase.Date,
                             })

@@ -13,6 +13,7 @@ import EditProductsComp from './components/editProducts/editProducts';
 import MainComp from './components/main/main';
 import NavbarComp from './components/navbar/navbar';
 import ProductsComp from './components/products/products';
+import PurchasesComp from './components/purchases/purchases';
 
 function App() {
   return (
@@ -53,7 +54,7 @@ function App() {
         <Route
           exact
           path='/Purchases'
-          element={<MainComp></MainComp>}
+          element={<PurchasesComp></PurchasesComp>}
         />
       </Routes>
     </Router>

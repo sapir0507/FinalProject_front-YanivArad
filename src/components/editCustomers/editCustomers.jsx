@@ -26,14 +26,25 @@ function EditCustomersComp() {
     const params = useParams();
 
     useEffect(() => {
-      console.log("editCustomers, params", params.id);
+      let arr = []
       let _prodList = purchasesSelect.filter(pur=>{
-        console.log(pur);
         return pur.CustomerId===params.id
     });
-      console.log(_prodList)
+    if(prodList){
+        arr = _prodList.map(prod=>{
+            let prodName = (productsSelect.find(item => {
+                return item.ID === prod.ProductId
+            }))
+            return {
+                ID: prod.ID,
+                Name: prodName.Name
+            }
+        });
+        setProdList(arr);
+    }
+    else setProdList([]);
 
-    }, [params])
+    }, [params, prodList, productsSelect, purchasesSelect])
     
 
     return ( <Container>
@@ -47,7 +58,9 @@ function EditCustomersComp() {
             <Grid item xs={12} sm={12} md={6}>
                 <Item>
                     {/* list of all items that a customer bought */}
-                     <ListItemComp isCus={true} prodList={prodList}></ListItemComp>
+                    <ul>
+                     <ListItemComp isCus={false} prodList={prodList}></ListItemComp>
+                    </ul>
                 </Item>
             </Grid>
         </Grid>
