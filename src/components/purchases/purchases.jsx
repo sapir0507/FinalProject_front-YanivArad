@@ -18,6 +18,8 @@ function PurchasesComp() {
     let opCus
     let opProd
 
+    const [showTable, setShowTable] = React.useState(false)
+
     const [optionCus, setOptionCus] = React.useState([])
     const [optionProd, setOptionProd] = React.useState([])
 
@@ -60,6 +62,7 @@ function PurchasesComp() {
     }
 
     const handleSearch = () => {
+        setShowTable(true)
         setSelectedCustomer(opCus)
         setSelectedProduct(opProd)
         // console.log(writtenDate)
@@ -110,7 +113,7 @@ function PurchasesComp() {
                         margin: "30px 10px",
                         
                     }}>
-                        <PurchasesTableComp productID={selectedProduct} customerID={selectedCustomer}></PurchasesTableComp>
+                        {showTable?<PurchasesTableComp productID={selectedProduct} customerID={selectedCustomer}></PurchasesTableComp>:<Container></Container>}
                     </Box>
                 </Grid>
             </Grid>
