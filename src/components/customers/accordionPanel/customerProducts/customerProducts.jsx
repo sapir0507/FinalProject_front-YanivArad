@@ -15,7 +15,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Button, TableHead } from '@mui/material';
+import { Button, Container, TableHead } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -157,7 +157,8 @@ function CustomerProductsComp({customer}) {
   const theme = useTheme();
 
   return (
-   <ThemeProvider theme={theme}>
+   <Container>
+    {myRows.length > 0? <ThemeProvider theme={theme}>
      <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
@@ -227,7 +228,8 @@ function CustomerProductsComp({customer}) {
         </TableFooter>
       </Table>
     </TableContainer>
-   </ThemeProvider>
+   </ThemeProvider>: <Container></Container>}
+   </Container>
   );
 }
 

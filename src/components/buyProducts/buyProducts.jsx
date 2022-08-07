@@ -8,11 +8,13 @@ import { pruchaseAdd } from "../../redux/reducerSlices/purchases/pruchases";
 import { nanoid } from "@reduxjs/toolkit";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
 
 const addProduct = (_customerId, chosen, productsSelect, dispatch) => {
+    console.log();
     let prodID = '';
     const date = new Date();
     productsSelect.forEach(product=>{
@@ -33,6 +35,7 @@ const addProduct = (_customerId, chosen, productsSelect, dispatch) => {
 
 function BuyProductsComp ({_customerId}) {
     const dispatch = useDispatch();
+    const params = useParams();
     const [open, setOpen] = React.useState(false);
     const productsSelect = useSelector(state => state.products);
     const [products, setProducts] = React.useState([]);
@@ -102,6 +105,11 @@ function BuyProductsComp ({_customerId}) {
                         }}
                         endIcon={ <AddIcon></AddIcon> }
                         onClick={ () => {
+                            if(params.id && params.id.includes("=")){
+                                console.log("includes = ");
+                                const cus_id = params.id.split("=")[1]
+                                _customerId = cus_id
+                            }
                             addProduct(_customerId, chosen, productsSelect, dispatch)
                             handleClick()
                         }}>Add

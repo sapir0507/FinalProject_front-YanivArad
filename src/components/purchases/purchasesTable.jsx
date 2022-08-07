@@ -106,84 +106,71 @@ function PurchasesTableComp({productID, customerID}) {
 
     useEffect(()=>{
         let tempRows = [];
-        let cus = [];
-        let prod = [];
-        // if(customerID){
-        //     cus = customersSelect.filter(customer => customer.ID === customerID);
-        //     console.log("customer from purchases component", cus);
-        // }
-        if(productID){
-            prod = productsSelect.filter(products=> products.ID === productID);
-            // console.log("product from purchases component", prod);
+
+        let customers = customersSelect.filter(customer=>{
+          if(customerID)
+            return customerID===customer.ID
+          else return customer
+        })
+
+        let products = productsSelect.filter(product=>{
+          if(productID)
+            return productID===product.ID
+          else return product
+        })
+        const originals = {
+          customers: customers,
+          products: products
         }
-       
-        // purchasesSelect
-        const filteredCus = customersSelect.filter(customer=>{
-          if(customerID){
-            if(customer.ID === customerID){
-              return customer;
-            }
-          }
-          else return customer;
-        })
-
-         const data = filteredCus.map(fil=>{
-          let releventPurchases = []
-          purchasesSelect.filter(pur=>{
-            if(pur.CustomerId === fil.ID)
-              releventPurchases = [...releventPurchases, {date: {id: pur.ProductId, date: pur.Date}}]
-            return pur.CustumerId === fil.ID
+        purchasesSelect.forEach(purchase=>{
+          customers = originals.customers.filter(cus=>cus.ID===purchase.CustomerId)
+          products = originals.products.filter(prod=>prod.ID===purchase.ProductId)
+          products = products.map(prod=>{
+             let purchaseDetails = purchasesSelect.filter(pur=>prod.ID===pur.ProductId)
+             if(purchaseDetails.length>0) 
+                return {
+                  ...prod,
+                  date: purchaseDetails[0].Date
+                }
+              else return prod
           })
-
-          const _releventProduct = (productsSelect.filter(prod=>{
-            let _rel = releventPurchases.find(rel=>prod.ID === rel.date.id)
-            return _rel
-          }))
-
-          const releventProduct = _releventProduct.map(item=>{
-            // get the relevent purchase event
-            let _rel = releventPurchases.filter(rel=>item.ID === rel.date.id)
-            console.log(_rel);
-            if(_rel.length > 0 && _rel[0].date && _rel[0].date.date)
-              item = {...item, date: _rel[0].date.date}
-            return item
-          })
-
-          //array of objects
-          console.log("relevent products", releventProduct);
-
-          const finalObj = {
-            ...fil,
-            arrayOfProducts: [...releventProduct]
+          if(customers.length>0 && products.length>0)
+          {
+              const _tableItem = {
+                  customerID: purchase.CustomerId,
+                  name: getFullName(customers, purchase),
+                  purchasedItem: getPurchasedItem(products, purchase),
+                  purchaseDate: getDateOfBuying(products, purchase)
+              }
+              tempRows.push(_tableItem)
           }
-
-          return finalObj
-        })
-        console.log(data);
-        //placeholder
-        
-        data.forEach(item=>{
-          item.arrayOfProducts.forEach(product => {
-            tempRows.push({
-                customerID: item.ID,
-                name: item.FirstName + ' ' + item.LastName,
-                purchasedItem: product.Name,
-                purchaseDate: product.date
-            })
-          });
-
-        })
+        })         
       
-        // tempRows.push({
-        //     customerID: 1,
-        //     name: "sapir",
-        //     purchasedItem: "item",
-        //     purchaseDate: "17.7.1994"
-        // })
         setMyRows(tempRows);
 
-    },[productID, customerID, customersSelect, productsSelect])
+    },[productID, customerID, customersSelect, productsSelect, purchasesSelect])
 
+    const getFullName = (customers, purchase) =>{
+      const customer = customers.filter(cus=>cus.ID===purchase.CustomerId)
+      if(customer.length > 0)
+        return customer[0].FirstName + ' ' + customer[0].LastName
+      else return ''
+    }
+
+
+    const getPurchasedItem = (products, purchase) => {
+      const item = products.filter(pur=>pur.ID===purchase.ProductId)
+      if(item.length > 0)
+        return item[0].Name 
+      else return ''
+    }
+
+    const getDateOfBuying = (products, purchase) => {
+      const item = products.filter(pur=>pur.ID===purchase.ProductId)
+      if(item.length > 0)
+        return item[0].date 
+      else return ''
+    }
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRows.length) : 0;
