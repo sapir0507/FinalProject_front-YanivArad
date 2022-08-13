@@ -121,28 +121,26 @@ function PurchasesTableComp({productID, customerID, selectedDate}) {
         let productsFoundForPurchase = undefined;
         if(customerID)
           customersFoundForPurchase = customersSelect.find(cus=>{
-            return Number(cus.ID)===Number(customerID)&& Number(purchase.CustomerId)===Number(cus.ID)
+            return Number(cus.ID)===Number(customerID) && Number(purchase.CustomerId)===Number(cus.ID)
           });
         else 
           customersFoundForPurchase = customersSelect.find(cus=>cus.ID===purchase.CustomerId);
 
         if(productID)
           productsFoundForPurchase = productsSelect.find(prod=>{
-              return Number(prod.ID)===Number(productID)&&Number(prod.ID)===Number(purchase.ProductId)
+              return Number(prod.ID)===Number(productID) && Number(prod.ID)===Number(purchase.ProductId)
           });
         else
           productsFoundForPurchase = productsSelect.find(prod=>prod.ID===purchase.ProductId);
-        console.log("customerFoundForPurchase--->", customersFoundForPurchase);
-        console.log("productFoundForPurchase--->", productsFoundForPurchase);
+        
         //if a date was selected filter all the products that weren't bought on that day
         let c = true
         if(selectedDate) 
           if(purchase.Date!==selectedDate)
             c = false 
-        debugger
+        
         if(customersFoundForPurchase && productsFoundForPurchase && c){
           const tempRow = createTableItem(customersFoundForPurchase.ID, `${customersFoundForPurchase.FirstName} ${customersFoundForPurchase.LastName}`, productsFoundForPurchase.Name, purchase.Date);
-          console.log("row to add to the array", tempRow);
           tableItemArray = [...tableItemArray, tempRow];
         }
       })     
@@ -151,10 +149,10 @@ function PurchasesTableComp({productID, customerID, selectedDate}) {
   
 
     useEffect(()=>{
-      let tempRows = [];
+      
       setMyRows([])
 
-      tempRows = createTableRows()
+      const tempRows = createTableRows()
     
       setMyRows(tempRows);
 
@@ -170,7 +168,7 @@ function PurchasesTableComp({productID, customerID, selectedDate}) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 5));
     setPage(0);
   };
   const theme = useTheme();
@@ -191,8 +189,8 @@ function PurchasesTableComp({productID, customerID, selectedDate}) {
           {(rowsPerPage > 0
             ? myRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : myRows
-          ).map((row) => (
-            <TableRow key={row.name}>
+          ).map((row, index) => (
+            <TableRow key={index}>
               <TableCell style={{ width: 160 }} align="center">
                 {row.customerID}
               </TableCell>

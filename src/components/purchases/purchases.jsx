@@ -55,7 +55,6 @@ function PurchasesComp() {
 
     const cusSelected = (cus) => {
         if(cus===null||cus===''||cus===undefined){
-            console.log("CUS", cus)
             setOpCus('')
         }
         if(cus){
@@ -64,7 +63,6 @@ function PurchasesComp() {
     }
     const prodSelected = (prod) => {
         if(prod===null||prod===''||prod===undefined){
-            console.log("PROD", prod)
             setOpProd(undefined)
         }
 
@@ -76,11 +74,6 @@ function PurchasesComp() {
 
     const handleSearch = () => {
         setShowTable(true)
-        console.log("_________________\n")
-        console.log("op Cus", opCus)
-        console.log("op Prod", opProd)
-        console.log("op date", writtenDate);
-        
         setSelectedCustomer(opCus)
         setSelectedProduct(opProd)
         setSelectedDate(writtenDate)

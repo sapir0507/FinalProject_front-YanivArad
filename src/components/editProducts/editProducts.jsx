@@ -33,7 +33,6 @@ function EditProductsComp() {
 
     useEffect(() => {
         let arr = []
-        console.log("params.id", params.id)
         let _cusList = purchasesSelect.filter(pur=>{
             return pur.ID===params.id
         });
@@ -46,7 +45,6 @@ function EditProductsComp() {
                 LastName: prodName.LastName
             }
         });
-        console.log(arr);
         setCusList(arr);
     
       }, [customersSelect, params, productsSelect, purchasesSelect])

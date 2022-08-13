@@ -18,7 +18,6 @@ const addProduct = (_customerId, chosen, productsSelect, dispatch) => {
     let prodID = '';
     const date = new Date();
     const UTC_DATE = `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`;
-    console.log(UTC_DATE);
 
     productsSelect.forEach(product=>{
         if(product.Name === chosen) 

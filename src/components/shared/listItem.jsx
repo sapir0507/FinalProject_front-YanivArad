@@ -13,7 +13,7 @@ function ListItemComp({isCus, cusList, prodList}) {
                 return <li key={customer.ID}><Link to={`/EditCustomers/${customer.ID}`}>{customer.FirstName + ' ' + customer.LastName}</Link></li>
             })}
         </Container> : <Container>
-            {prodList && console.log(prodList)&& prodList.map(product=>{
+            {prodList && prodList.map(product=>{
                 return <li key={product.ID}><Link to={`/EditProducts/${product.ID}`}>{product.Name}</Link></li>
             })}
         </Container>}
