@@ -19,7 +19,6 @@ import { Button, TableHead } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-// import { useSelector} from 'react-redux'
 
 function TablePaginationActions(props) {
     const theme = useTheme({ palette: { mode: 'light' } });
@@ -84,7 +83,6 @@ TablePaginationActions.propTypes = {
 };
 
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -94,13 +92,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       fontSize: 14,
     },
   }));
-
-// function createData(name, purchaseDate, Add) {
-//     return { name, purchaseDate, Add };
-// }
-// const rows = [
-//     createData('sapir', '17.7.1994', 'add')
-// ];
 
 function UsersTableComp({productID, customersSelect, purchasesSelect}) {
     const [page, setPage] = useState(0);
@@ -122,8 +113,6 @@ function UsersTableComp({productID, customersSelect, purchasesSelect}) {
             });
             
             if(cus){
-              console.log( "cus", cus);
-              console.log(item.Date);
               tempRows.push({
                 customerID: cus.ID,
                 name: cus.FirstName + " " + cus.LastName,

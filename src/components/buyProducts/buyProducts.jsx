@@ -8,15 +8,18 @@ import { pruchaseAdd } from "../../redux/reducerSlices/purchases/pruchases";
 import { nanoid } from "@reduxjs/toolkit";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { productQuantityUpdate } from "../../redux/reducerSlices/products/products";
 
 
 
 
 const addProduct = (_customerId, chosen, productsSelect, dispatch) => {
-    console.log();
     let prodID = '';
     const date = new Date();
+    const UTC_DATE = `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`;
+    console.log(UTC_DATE);
+
     productsSelect.forEach(product=>{
         if(product.Name === chosen) 
             prodID = product.ID;
@@ -24,12 +27,13 @@ const addProduct = (_customerId, chosen, productsSelect, dispatch) => {
     if(prodID!=='')
     {
         const obj = {
-            Date: `${date.getUTCDate() + 1}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+            Date: UTC_DATE,
             ProductId: prodID,
             CustomerId: _customerId? _customerId : '1',
             ID: nanoid()
         }
         dispatch(pruchaseAdd(obj))
+        dispatch(productQuantityUpdate(obj.ProductId))
     }
 }
 
@@ -106,7 +110,6 @@ function BuyProductsComp ({_customerId}) {
                         endIcon={ <AddIcon></AddIcon> }
                         onClick={ () => {
                             if(params.id && params.id.includes("=")){
-                                console.log("includes = ");
                                 const cus_id = params.id.split("=")[1]
                                 _customerId = cus_id
                             }

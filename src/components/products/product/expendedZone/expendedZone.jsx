@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import UsersTableComp from "./usersTable/usersTable";
 
+
 function ExpendedZoneComp({productID, customersSelect, purchasesSelect}) {
     const [expanded, setExpanded] = React.useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
@@ -27,6 +28,7 @@ function ExpendedZoneComp({productID, customersSelect, purchasesSelect}) {
         </AccordionSummary>
         <AccordionDetails>
           <UsersTableComp productID={productID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></UsersTableComp>   
+          
         </AccordionDetails>
       </Accordion>
     </Container> );

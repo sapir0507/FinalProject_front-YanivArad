@@ -20,11 +20,37 @@ const products = createSlice({
     initialState,
     reducers: {
         productAdd(state, action){
-            state.push(action.payload)
+            return state.concat(action.payload)
+        },
+        productUpdate(state, action){
+            let a = [...state]
+            a = a.map(b=>{
+                if(Number(b.ID)===Number(action.payload.ID))
+                    return action.payload
+                else return b
+            })
+            return a
+        },
+        productQuantityUpdate(state, action){
+            let products = [...state]
+            products = products.map(product=>{
+                if(action.payload === product.ID)
+                    return {...product,
+                        Quantity: product.Quantity - 1    
+                    }
+                else return product
+            })
+            return products
+        },
+        productDelete(state, action){
+            const start = [...state.slice(0,action.payload-1)]
+            const a =  [...state.slice(action.payload )]
+
+            return start.concat(a)
         }
     }
 })
 
-export const { productAdd } = products.actions
+export const { productAdd, productDelete, productUpdate, productQuantityUpdate } = products.actions
 
 export default products.reducer

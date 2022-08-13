@@ -96,13 +96,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
   }));
 
-// function createData(productName, purchaseDate) {
-//     return { productName, purchaseDate };
-// }
-// const rows = [
-//     createData('sapir', '17.7.1994', 'add')
-// ];
-
 function CustomerProductsComp({customer}) {
     const purchasesSelect = useSelector(state=>state.purchases);
     const productsSelect = useSelector(state=>state.products)
@@ -120,7 +113,6 @@ function CustomerProductsComp({customer}) {
                 if(purchase.CustomerId===customer.ID){
                     const productPurchases = productsSelect.filter(prod=>prod.ID===purchase.ProductId);
                     if(productPurchases)
-                    console.log(purchase)
                         productPurchases.forEach(item => {
                             tempRows.push({
                                 productID: purchase.ProductId,

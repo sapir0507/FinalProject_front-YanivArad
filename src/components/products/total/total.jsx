@@ -10,7 +10,6 @@ function TotalAmountComp() {
     const [total, setTotal] = useState(0)
 
     useEffect(() => {
-        console.log("purchases", purchasesSelect);
         let Total = 0;
         purchasesSelect.forEach(pruch => {
             let prod = productsSelect.filter(prod=>prod.ID===pruch.ProductId)

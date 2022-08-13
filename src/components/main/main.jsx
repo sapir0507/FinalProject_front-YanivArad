@@ -12,16 +12,13 @@ function MainComp() {
     // const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        console.log("products", productsSelect);
         // setProducts(productsSelect);
     }, [productsSelect])
 
     useEffect(() => {
-        console.log("pruchases", purchasesSelect);
     }, [purchasesSelect])
 
     useEffect(() => {
-        console.log("customers", customersSelect);
     }, [customersSelect])
     
     return ( <MenuComp></MenuComp>);

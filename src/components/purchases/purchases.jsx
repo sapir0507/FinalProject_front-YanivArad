@@ -3,20 +3,20 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box, Button, Container, createTheme, Grid, ThemeProvider, Typography } from "@mui/material";
 import { useSelector } from 'react-redux';
-// import { TextFields } from '@mui/icons-material';
 import PurchasesTableComp from './purchasesTable';
 
 const darkTheme = createTheme({});
-// const purchases = ['harry potter', 'serious black', 'draco malfoy'];
 
 
 function PurchasesComp() {
     const productsSelect = useSelector(state=>state.products);
     const customersSelect = useSelector(state=>state.customers);
-    const purchasesSelect = useSelector(state=>state.purchases);
 
-    let opCus
-    let opProd
+    // let opCus
+    // let opProd
+
+    const [opCus, setOpCus] = React.useState('')
+    const [opProd, setOpProd] = React.useState('')
 
     const [showTable, setShowTable] = React.useState(false)
 
@@ -26,6 +26,7 @@ function PurchasesComp() {
 
     const [selectedCustomer, setSelectedCustomer] = React.useState('')
     const [selectedProduct, setSelectedProduct] = React.useState('')
+    const [selectedDate, setSelectedDate] = React.useState('')
     const [writtenDate, setWrittenDate] = React.useState('')
 
 
@@ -53,20 +54,36 @@ function PurchasesComp() {
     }, [customersSelect, productsSelect])
 
     const cusSelected = (cus) => {
-        // setSelectedCustomer(cus.id)
-        opCus = cus.id
+        if(cus===null||cus===''||cus===undefined){
+            console.log("CUS", cus)
+            setOpCus('')
+        }
+        if(cus){
+                setOpCus(cus.id)
+        }
     }
     const prodSelected = (prod) => {
-        // setSelectedProduct(prod.id)
-        opProd = prod.id
+        if(prod===null||prod===''||prod===undefined){
+            console.log("PROD", prod)
+            setOpProd(undefined)
+        }
+
+        if(prod){
+                setOpProd(prod.id)
+        }
+       
     }
 
     const handleSearch = () => {
         setShowTable(true)
+        console.log("_________________\n")
+        console.log("op Cus", opCus)
+        console.log("op Prod", opProd)
+        console.log("op date", writtenDate);
+        
         setSelectedCustomer(opCus)
         setSelectedProduct(opProd)
-        // console.log(writtenDate)
-        // console.log(selectedProduct, selectedCustomer)
+        setSelectedDate(writtenDate)
     }
 
     
@@ -88,8 +105,8 @@ function PurchasesComp() {
                     >
                        
 
-                        <ControllableStates options={optionProd} label='Products' prodSelected={prodSelected}></ControllableStates>
                         <ControllableStates options={optionCus} label='Customers' cusSelected={cusSelected}></ControllableStates>
+                        <ControllableStates options={optionProd} label='Products' prodSelected={prodSelected}></ControllableStates>
                         <Box
                             component={"form"}
                             sx={{
@@ -98,10 +115,11 @@ function PurchasesComp() {
                             noValidate
                             autoComplete="off"           
                         >
-                            <TextField id="outlined-basic" color="primary" label="Dates" variant="outlined" focused  onChange={(e)=>{
+                            <TextField id="outlined-basic" color="primary" label="Dates" variant="outlined" focused onChange={(e)=>{
                                     setWrittenDate(e.target.value)
                             }}                         
-                            helperText="Please enter your purchase date"/>    
+                            helperText="Please enter your purchase date in the following format day/month/year"
+                            placeholder='17/7/1994'/>    
                         </Box>
                         <Button variant='contained' sx={{marginTop: 3}} color="success" onClick={()=>{
                             handleSearch()
@@ -113,7 +131,7 @@ function PurchasesComp() {
                         margin: "30px 10px",
                         
                     }}>
-                        {showTable?<PurchasesTableComp productID={selectedProduct} customerID={selectedCustomer}></PurchasesTableComp>:<Container></Container>}
+                        {showTable?<PurchasesTableComp productID={selectedProduct} customerID={selectedCustomer} selectedDate={selectedDate}></PurchasesTableComp>:<Container></Container>}
                     </Box>
                 </Grid>
             </Grid>
@@ -129,7 +147,6 @@ function ControllableStates({options, label, cusSelected, prodSelected}) {
   const [inputValue, setInputValue] = React.useState('');
   
   const handleOnChange = (newValue) => { 
-        console.log("newValue", newValue)
         if(cusSelected){
             cusSelected(newValue)
         }
@@ -152,6 +169,7 @@ function ControllableStates({options, label, cusSelected, prodSelected}) {
         }}
         id="controllable-states-demo"
         options={options}
+        clearOnEscape
         sx={{ width: 300, marginTop: 3 }}
         renderInput={(params) => <TextField {...params} label={label} />}
       />

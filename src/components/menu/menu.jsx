@@ -19,7 +19,6 @@ function MenuComp() {
 
     const navigateTo = (e, button, address) => {
         e.preventDefault()
-        console.log(button);
         navigate(address);
     }
 

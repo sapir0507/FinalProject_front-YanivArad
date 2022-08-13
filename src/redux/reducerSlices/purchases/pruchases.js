@@ -1,20 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
+// import { }
 
-const date = new Date()
-
-const initialState = [    {
-    ID: '1', 
-    CustomerId: '1',
-    ProductId: '1',
-    Date: `${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`
-}]
+const initialState = []
 
 const pruchases = createSlice({
     name: 'pruchases',
     initialState,
     reducers: {
         pruchaseAdd(state, action){
-            state.push(action.payload)
+            return state.concat(action.payload)
         }
     }
 })

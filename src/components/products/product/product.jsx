@@ -1,8 +1,18 @@
 import { useSelector} from 'react-redux'
 import { Box, Container, createTheme, Paper, ThemeProvider, Typography } from "@mui/material";
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ExpendedZoneComp from './expendedZone/expendedZone';
+import React from 'react';
+
+// const expendedZone = (ID, customersSelect, purchasesSelect) => {
+//     return <ExpendedZoneComp productID = {ID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></ExpendedZoneComp>
+// }
+
+// const areEqual = (prevProps, nextProps) => {
+//     return prevProps.ID === nextProps.ID && prevProps.customersSelect === nextProps.customersSelect && prevProps.purchasesSelect === nextProps.purchasesSelect;
+// }
+
+// const ExpendedMemo = React.memo(expendedZone, areEqual)
 
 
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
@@ -11,13 +21,6 @@ function ProductComp() {
     const productsSelect = useSelector(state=>state.products);
     const customersSelect = useSelector(state=>state.customers);
     const purchasesSelect = useSelector(state=>state.purchases);
-
-    useEffect(() => {
-        console.log("products", productsSelect);
-        console.log("customers", customersSelect);
-        console.log("purchases", purchasesSelect);
-
-    }, [customersSelect, productsSelect, purchasesSelect])
 
     return ( <Container>
         <ThemeProvider theme={darkTheme}>
@@ -41,9 +44,7 @@ function ProductComp() {
                             color: 'red'
                         }
                     }
-                }} key={index} elevation={2} onClick={(e)=>{
-                    console.log(prod.Name)
-                }}>
+                }} key={index} elevation={2}>
                     <ul>
                         <Box sx={{
                             'a':{
@@ -64,13 +65,14 @@ function ProductComp() {
                             Quantity: {prod.Quantity}
                         </li>                        
                     </ul>
-                    <ExpendedZoneComp productID = {prod.ID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></ExpendedZoneComp>
-                    {purchasesSelect && purchasesSelect.find(pur=>prod.ID===pur.ProductID) ?  <ExpendedZoneComp productID = {prod.ID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></ExpendedZoneComp> : <Container>
+                    
+                    {(purchasesSelect && customersSelect) && purchasesSelect.length > 0 && (purchasesSelect.filter(pur=>pur.ProductId===prod.ID).length) > 0? <ExpendedZoneComp productID = {prod.ID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></ExpendedZoneComp> : <Container>
                     <Typography variant='body1' style={{marginLeft: 25, color: 'black', fontWeight: 800}}>
                          No one bought this product yet.
                     </Typography>
                     </Container>
                     }
+
                    
                 </Paper>
             })}

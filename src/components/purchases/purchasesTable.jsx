@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {  useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { styled, ThemeProvider, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -16,10 +16,9 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { TableHead } from '@mui/material';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { createNextState } from '@reduxjs/toolkit';
-// import { useSelector} from 'react-redux'
+import { useCallback } from 'react';
+
 
 function TablePaginationActions(props) {
     const theme = useTheme({ palette: { mode: 'light' } });
@@ -95,7 +94,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
   }));
 
-function PurchasesTableComp({productID, customerID}) {
+function PurchasesTableComp({productID, customerID, selectedDate}) {
     const productsSelect = useSelector(state=>state.products);
     const customersSelect = useSelector(state=>state.customers);
     const purchasesSelect = useSelector(state=>state.purchases);
@@ -104,73 +103,64 @@ function PurchasesTableComp({productID, customerID}) {
 
     const [myRows, setMyRows] = useState([]);
 
-    useEffect(()=>{
-        let tempRows = [];
+    const createTableItem = (CustomerId, CustomerFullName, ItemName,ItemPurchaseDate) => {
+      const _tableItem = {
+        customerID: CustomerId,
+        name: CustomerFullName,
+        purchasedItem: ItemName,
+        purchaseDate: ItemPurchaseDate
+      }
+      return _tableItem
+    }
 
-        let customers = customersSelect.filter(customer=>{
-          if(customerID)
-            return customerID===customer.ID
-          else return customer
-        })
+    const createTableRows = useCallback(() => {
+      let tableItemArray = []
+      purchasesSelect.forEach(purchase=>{
+        // filter all the customers and products that were not bought or didn't buy anything
+        let customersFoundForPurchase = undefined;
+        let productsFoundForPurchase = undefined;
+        if(customerID)
+          customersFoundForPurchase = customersSelect.find(cus=>{
+            return Number(cus.ID)===Number(customerID)&& Number(purchase.CustomerId)===Number(cus.ID)
+          });
+        else 
+          customersFoundForPurchase = customersSelect.find(cus=>cus.ID===purchase.CustomerId);
 
-        let products = productsSelect.filter(product=>{
-          if(productID)
-            return productID===product.ID
-          else return product
-        })
-        const originals = {
-          customers: customers,
-          products: products
+        if(productID)
+          productsFoundForPurchase = productsSelect.find(prod=>{
+              return Number(prod.ID)===Number(productID)&&Number(prod.ID)===Number(purchase.ProductId)
+          });
+        else
+          productsFoundForPurchase = productsSelect.find(prod=>prod.ID===purchase.ProductId);
+        console.log("customerFoundForPurchase--->", customersFoundForPurchase);
+        console.log("productFoundForPurchase--->", productsFoundForPurchase);
+        //if a date was selected filter all the products that weren't bought on that day
+        let c = true
+        if(selectedDate) 
+          if(purchase.Date!==selectedDate)
+            c = false 
+        debugger
+        if(customersFoundForPurchase && productsFoundForPurchase && c){
+          const tempRow = createTableItem(customersFoundForPurchase.ID, `${customersFoundForPurchase.FirstName} ${customersFoundForPurchase.LastName}`, productsFoundForPurchase.Name, purchase.Date);
+          console.log("row to add to the array", tempRow);
+          tableItemArray = [...tableItemArray, tempRow];
         }
-        purchasesSelect.forEach(purchase=>{
-          customers = originals.customers.filter(cus=>cus.ID===purchase.CustomerId)
-          products = originals.products.filter(prod=>prod.ID===purchase.ProductId)
-          products = products.map(prod=>{
-             let purchaseDetails = purchasesSelect.filter(pur=>prod.ID===pur.ProductId)
-             if(purchaseDetails.length>0) 
-                return {
-                  ...prod,
-                  date: purchaseDetails[0].Date
-                }
-              else return prod
-          })
-          if(customers.length>0 && products.length>0)
-          {
-              const _tableItem = {
-                  customerID: purchase.CustomerId,
-                  name: getFullName(customers, purchase),
-                  purchasedItem: getPurchasedItem(products, purchase),
-                  purchaseDate: getDateOfBuying(products, purchase)
-              }
-              tempRows.push(_tableItem)
-          }
-        })         
-      
-        setMyRows(tempRows);
+      })     
+      return tableItemArray;
+    },[customerID, customersSelect, productID, productsSelect, purchasesSelect, selectedDate])
+  
 
-    },[productID, customerID, customersSelect, productsSelect, purchasesSelect])
+    useEffect(()=>{
+      let tempRows = [];
+      setMyRows([])
 
-    const getFullName = (customers, purchase) =>{
-      const customer = customers.filter(cus=>cus.ID===purchase.CustomerId)
-      if(customer.length > 0)
-        return customer[0].FirstName + ' ' + customer[0].LastName
-      else return ''
-    }
+      tempRows = createTableRows()
+    
+      setMyRows(tempRows);
 
+    },[productID, customerID, customersSelect, productsSelect, purchasesSelect, selectedDate, createTableRows])
 
-    const getPurchasedItem = (products, purchase) => {
-      const item = products.filter(pur=>pur.ID===purchase.ProductId)
-      if(item.length > 0)
-        return item[0].Name 
-      else return ''
-    }
-
-    const getDateOfBuying = (products, purchase) => {
-      const item = products.filter(pur=>pur.ID===purchase.ProductId)
-      if(item.length > 0)
-        return item[0].date 
-      else return ''
-    }
+    
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRows.length) : 0;
