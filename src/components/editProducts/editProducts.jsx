@@ -32,22 +32,23 @@ function EditProductsComp() {
 
 
     useEffect(() => {
-        let arr = []
         let _cusList = purchasesSelect.filter(pur=>{
-            return pur.ID===params.id
+            return Number(pur.ProductId)===Number(params.id)
         });
-
-        arr = _cusList.map(prod=>{
-            let prodName = (customersSelect.find(item => item.ID === prod.CustomerId))
+        const arr = _cusList.map(cusFromPurchase=>{
+            let CustomerName = customersSelect.find(item =>{ 
+                return Number(item.ID) === Number(cusFromPurchase.CustomerId)
+            })
+            if(!CustomerName) return cusFromPurchase;
             return {
-                ID: prodName.ID,
-                FirstName: prodName.FirstName,
-                LastName: prodName.LastName
+                ID: CustomerName.ID,
+                FirstName: CustomerName.FirstName,
+                LastName: CustomerName.LastName
             }
         });
         setCusList(arr);
     
-      }, [customersSelect, params, productsSelect, purchasesSelect])
+      }, [customersSelect, params, purchasesSelect])
 
 
       useEffect(() => {

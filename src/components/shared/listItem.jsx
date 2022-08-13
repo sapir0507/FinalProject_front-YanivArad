@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function ListItemComp({isCus, cusList, prodList}) {
-    
+
     return ( <Container>
         {isCus? <Container>
             {cusList && cusList.map(customer=>{

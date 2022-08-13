@@ -28,28 +28,25 @@ function EditCustomersComp() {
     const params = useParams();
 
     useEffect(() => {
-      let arr = []
       let _prodList = purchasesSelect.filter(pur=>{
         return pur.CustomerId===params.id
       });
 
-    if(prodList){
-        arr = _prodList.map(prod=>{
+    const arr = _prodList.map(prodFromPurchase=>{
             let prodName = (productsSelect.find(item => {
-                return item.ID === prod.ProductId
+                return Number(item.ID) === Number(prodFromPurchase.ProductId)
             }))
 
+            if(!prodName) return prodFromPurchase;
+
             return {
-                ID: prod.ID,
+                ID: prodName.ID,
                 Name: prodName.Name
             }
         });
         setProdList(arr);
-    }
-    else setProdList([]);
-    
 
-    }, [params, prodList, productsSelect, purchasesSelect])
+    }, [params, productsSelect, purchasesSelect])
 
     useEffect(()=>{
         const cus = customersSelect.filter(cus=>Number(cus.ID)===Number(params.id))

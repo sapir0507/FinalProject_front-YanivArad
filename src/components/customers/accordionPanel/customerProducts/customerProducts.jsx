@@ -184,7 +184,8 @@ function CustomerProductsComp({customer}) {
                     textAlign: 'center'
                 }}>
                     <Button variant="contained" color="success" endIcon={<SendIcon />} onClick={()=>{
-                        navigate(`/BuyProduct/customerId=${customer.ID}`)
+                      
+                        navigate(`/BuyProduct/${customer.ID}`)
                     }}>Buy Product</Button>
                 </Box>
               </TableCell>
