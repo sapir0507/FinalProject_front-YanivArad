@@ -2,10 +2,6 @@ import { Container } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function ListItemComp({isCus, cusList, prodList}) {
-
-    // useEffect(()=>{
-        
-    // },[])
     
     return ( <Container>
         {isCus? <Container>
