@@ -123,16 +123,8 @@ function UsersTableComp({productID, customersSelect, purchasesSelect}) {
         });
         setMyRows(tempRows);
         }
-        //placeholder
-       else{
-        tempRows.push({
-            customerID: 1,
-            name: "sapir",
-            purchaseDate: "17.7.1994",
-            Add: "Add"
-        })
-        setMyRows(tempRows);
-       }
+       
+      
     },[productID, customersSelect, purchasesSelect])
 
   // Avoid a layout jump when reaching the last page with empty rows.

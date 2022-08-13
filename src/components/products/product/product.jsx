@@ -4,16 +4,6 @@ import { Link } from 'react-router-dom';
 import ExpendedZoneComp from './expendedZone/expendedZone';
 import React from 'react';
 
-// const expendedZone = (ID, customersSelect, purchasesSelect) => {
-//     return <ExpendedZoneComp productID = {ID} customersSelect={customersSelect} purchasesSelect={purchasesSelect}></ExpendedZoneComp>
-// }
-
-// const areEqual = (prevProps, nextProps) => {
-//     return prevProps.ID === nextProps.ID && prevProps.customersSelect === nextProps.customersSelect && prevProps.purchasesSelect === nextProps.purchasesSelect;
-// }
-
-// const ExpendedMemo = React.memo(expendedZone, areEqual)
-
 
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 

@@ -9,9 +9,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 
 
 function CustomersComp() {
-    // const productsSelect = React.useSelector(state=>state.products)
     const customersSelect = useSelector(state=>state.customers)
-    // const purchasesSelect = React.useSelector(state=>state.purchases)
     const [panels, setPanels] = useState([]);
     const [expanded, setExpanded] = useState(false);
 

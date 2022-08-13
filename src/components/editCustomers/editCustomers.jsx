@@ -14,7 +14,6 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 function EditCustomersComp() {
-    // const customersSelect = useSelector(state=>state.customers)
     const productsSelect = useSelector(state=>state.products)
     const purchasesSelect = useSelector(state=>state.purchases)
     const customersSelect = useSelector(state=>state.customers)

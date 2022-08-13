@@ -5,8 +5,6 @@ import { useEffect } from "react";
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 
 function AllBuyersComp({prodID, customersSelect, purchasesSelect}) {
-    // const customersSelect = useSelector(state=>state.customers);
-    // const purchasesSelect = useSelector(state=>state.parchases);
 
     const [buyingUsers, setBuyingUsers] = useState([]);
 

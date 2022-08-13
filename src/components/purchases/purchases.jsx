@@ -12,9 +12,6 @@ function PurchasesComp() {
     const productsSelect = useSelector(state=>state.products);
     const customersSelect = useSelector(state=>state.customers);
 
-    // let opCus
-    // let opProd
-
     const [opCus, setOpCus] = React.useState('')
     const [opProd, setOpProd] = React.useState('')
 
